@@ -1,0 +1,60 @@
+@startuml
+autonumber
+    
+actor Utilisateur as Utilisateur
+participant Client as Client
+participant API_Gateway as API_Gateway
+participant CommentController as CommentController
+participant CommentService as CommentService
+participant CommentRegistry as CommentRegistry
+database Base_de_Donnees as Base_de_Donnees
+
+Utilisateur->> API_Gateway: Soumet un avis (note, texte)
+
+API_Gateway->>Client: Rédige et soumet l'avis (note, texte)
+activate Client
+
+Client->>API_Gateway: POST /api/games/{id}/comments
+activate API_Gateway
+    
+API_Gateway->>CommentController: Route la requête
+activate CommentController
+
+CommentController->>CommentService: createComment(userId, gameId, data)
+activate CommentService
+  
+CommentService->>CommentService: Vérifie si le joueur possède le jeu\net valide le texte (insultes, longueur)
+
+alt Validation Échouée (ex: Jeu non possédé)
+    CommentService-->>CommentController: Erreur (ValidationException)
+    CommentController-->>API_Gateway: 400 Bad Request ou 403 Forbidden
+    API_Gateway-->>Client: Réponse HTTP d'erreur
+    Client-->>Utilisateur: Affiche un message d'erreur
+        
+else Validation Réussie
+    CommentService->>CommentRegistry: save(new Comment)
+    activate CommentRegistry
+    
+    CommentRegistry->>Base_de_Donnees: INSERT INTO comments (...)
+    activate Base_de_Donnees
+        
+    Base_de_Donnees-->>CommentRegistry: Succès (ID du commentaire généré)
+    deactivate Base_de_Donnees
+        
+    CommentRegistry-->>CommentService: Entité Commentaire retournée
+    deactivate CommentRegistry
+       
+    CommentService-->>CommentController: DTO du commentaire
+        
+    CommentController-->>API_Gateway: 201 Created (Succès)
+        
+    API_Gateway-->>Client: 201 Created (Succès)
+        
+    Client-->>Utilisateur: Affiche le nouvel avis publié
+end
+    
+deactivate CommentService
+deactivate CommentController
+deactivate API_Gateway
+deactivate Client
+@enduml

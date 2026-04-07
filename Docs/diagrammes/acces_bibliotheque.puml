@@ -1,0 +1,55 @@
+@startuml
+autonumber
+    
+participant Client as Client
+participant API_Gateway as API_Gateway
+participant LibraryController as LibraryController
+participant LibraryService as LibraryService
+participant LibraryRegistry as LibraryRegistry
+database Base_de_Données as Base_de_Données
+
+   
+Client->>API_Gateway: GET /api/users/me/library (avec Token)
+activate API_Gateway
+    
+API_Gateway->>API_Gateway: Vérifie et valide le Token d'authentification
+    
+alt Token Invalide / Utilisateur non connecté
+    API_Gateway-->>Client: 401 Unauthorized
+    Client-->>Client: Redirige vers la page de connexion
+        
+else Token Valide
+    API_Gateway->>LibraryController: Route la requête (avec ID de l'utilisateur)
+    activate LibraryController
+        
+    LibraryController->>LibraryService: getUserLibrary(userId)
+    activate LibraryService
+       
+    LibraryService->>LibraryRegistry: findGamesByUserId(userId)
+    activate LibraryRegistry
+        
+    LibraryRegistry->>Base_de_Données: SELECT * FROM games INNER JOIN library ON games.id = library.game_id WHERE user_id = ?
+    activate Base_de_Données
+        
+    Base_de_Données-->>LibraryRegistry: Retourne les données brutes des jeux
+    deactivate Base_de_Données
+        
+    LibraryRegistry-->>LibraryService: Liste d'entités "Game"
+    deactivate LibraryRegistry
+        
+    LibraryService->>LibraryService: Enrichit les données (ex: temps de jeu récent)
+        
+    LibraryService-->>LibraryController: Liste de DTOs "LibraryGame"
+    deactivate LibraryService
+        
+    LibraryController-->>API_Gateway: 200 OK (Données au format JSON)
+    deactivate LibraryController
+        
+    API_Gateway-->>Client: 200 OK (Données de la bibliothèque)
+        
+    Client-->>Client: Affiche la liste des jeux possédés
+end
+    
+deactivate API_Gateway
+deactivate Client
+@enduml
