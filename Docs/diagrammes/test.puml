@@ -1,0 +1,110 @@
+@startuml uml
+' Direction et style général
+left to right direction
+skinparam packageStyle rect
+skinparam shadowing true
+skinparam roundcorner 20
+skinparam usecase {
+    BackgroundColor<<Magasin>> LightBlue
+    BackgroundColor<<Bibliothèque>> LightGreen
+    BackgroundColor<<Communauté>> LightYellow
+    BackgroundColor<<Gestion>> LightCoral
+    BorderColor Black
+    FontSize 12
+}
+
+' Acteurs avec couleur
+actor "Visiteur" as V #AliceBlue
+actor "Joueur" as J #LightSkyBlue
+actor "Studio" as S #LightPink
+actor "Admin Steam" as A #LightGray
+
+' Héritage
+V <|-- J
+
+' Système Steam
+rectangle "Système Steam" {
+
+  package "Magasin" <<Magasin>> {
+    usecase "Parcourir le catalogue" as UC1
+    usecase "Filtrer par catégorie" as UC1b
+    usecase "Afficher le détail d'un jeu" as UC1c
+    usecase "Ajouter au panier" as UC1d
+    usecase "Accéder au panier" as UC1e
+    usecase "Accéder à la liste de souhaits" as UC1f
+    usecase "Acheter un jeu" as UC2
+    usecase "Effectuer un paiement" as UC3
+    usecase "Vérifier l'âge" as UC4
+    usecase "Consulter actualités/classements" as UC5
+    usecase "Accéder boutique de points" as UC7
+    usecase "Recevoir recommandations personnalisées" as UC6
+  }
+
+  package "Bibliothèque & Profil" <<Bibliothèque>> {
+    usecase "Accéder à sa bibliothèque" as UC8
+    usecase "Installer un jeu" as UC9
+    usecase "Lancer un jeu" as UC10
+    usecase "Consulter succès/activité" as UC11
+    usecase "Gérer inventaire & profil" as UC13
+    usecase "Synchroniser les sauvegardes cloud" as UC12
+  }
+
+  package "Communauté" <<Communauté>> {
+    usecase "Participer aux discussions" as UC17
+    usecase "Accéder au Workshop/Marché" as UC18
+    usecase "Rejoindre un groupe" as UC21
+    usecase "Rédiger un avis" as UC22
+    usecase "Signaler un contenu inapproprié" as UC23
+  }
+
+  package "Gestion & Modération" <<Gestion>> {
+    usecase "Publier / Mettre à jour un jeu" as UC27
+    usecase "Modérer le contenu" as UC29
+    usecase "Gérer les signalements" as UC30
+    usecase "Analyser statistiques" as UC31
+  }
+}
+
+' Relations Visiteur
+V --> UC1
+V --> UC1b
+V --> UC1c
+V --> UC5
+V --> UC6
+
+' Relations Joueur
+J --> UC1d
+J --> UC1e
+J --> UC1f
+J --> UC2
+J --> UC7
+J --> UC8
+J --> UC9
+J --> UC10
+J --> UC11
+J --> UC12
+J --> UC13
+J --> UC17
+J --> UC18
+J --> UC21
+J --> UC22
+J --> UC23
+
+' Include / Extend
+UC2 ..> UC3 : <<include>>
+UC1c ..> UC4 : <<include>>
+UC8 ..> UC9 : <<include>>
+UC9 ..> UC10 : <<include>>
+UC1 ..> UC6 : <<extend>>
+UC22 ..> UC23 : <<include>>
+
+' Studio
+S --> UC27
+UC27 ..> UC31 : <<include>>
+
+' Admin Steam
+A --> UC29
+A --> UC30
+A --> UC31
+UC30 ..> UC23 : <<include>>
+@enduml
