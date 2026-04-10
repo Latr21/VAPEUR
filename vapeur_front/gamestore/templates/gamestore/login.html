@@ -1,0 +1,29 @@
+{% extends 'gamestore/base.html' %}
+
+{% block content %}
+<div class="flex items-center justify-center min-h-[70vh]">
+    <div class="steam-bg p-12 rounded-xl shadow-2xl border border-gray-700 w-full max-w-md">
+        <h2 class="text-3xl font-bold mb-8 text-center text-white tracking-widest uppercase">SIGN IN</h2>
+        
+        <form method="POST" class="space-y-6">
+            {% csrf_token %}
+            <div>
+                <label class="block text-sm font-semibold mb-2 text-gray-400">USERNAME</label>
+                <input type="text" name="username" class="w-full bg-[#32353c] border-0 rounded p-3 text-white focus:ring-2 focus:ring-blue-500 outline-none" required>
+            </div>
+            <div>
+                <label class="block text-sm font-semibold mb-2 text-gray-400">PASSWORD</label>
+                <input type="password" name="password" class="w-full bg-[#32353c] border-0 rounded p-3 text-white focus:ring-2 focus:ring-blue-500 outline-none" required>
+            </div>
+            <button type="submit" class="w-full steam-btn py-3 rounded font-bold text-white shadow-lg hover:opacity-90 transition transform active:scale-95">
+                Sign In
+            </button>
+        </form>
+        
+        <div class="mt-8 text-center text-sm">
+            <span class="text-gray-500">Don't have an account?</span>
+            <a href="{% url 'signup' %}" class="text-blue-400 hover:underline ml-1">Create one</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

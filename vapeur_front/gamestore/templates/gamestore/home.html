@@ -1,0 +1,23 @@
+{% extends 'gamestore/base.html' %}
+
+{% block content %}
+<div class="py-8">
+    <h1 class="text-4xl font-bold mb-8 text-white">Featured & Recommended</h1>
+    
+    <!-- Game Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {% for game in games %}
+        <div class="steam-card rounded-lg overflow-hidden shadow-2xl transform hover:scale-105 transition duration-300 flex flex-col">
+            <img src="{{ game.image }}" alt="{{ game.title }}" class="w-full h-48 object-cover">
+            <div class="p-6 flex-grow">
+                <h2 class="text-xl font-bold mb-2 text-white">{{ game.title }}</h2>
+                <div class="flex justify-between items-center mt-4">
+                    <span class="bg-gray-800 px-3 py-1 rounded text-green-400 font-bold border border-green-400">{{ game.price }}</span>
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition font-semibold">Buy Now</button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
