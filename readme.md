@@ -8,7 +8,7 @@ Approche hybride, N-tiers pour la séparation des couches de présentation, logi
 
 - Répartition du travail : Le découpage en tiers nous a permis de se répartir les tâches clairement sans créer de conflits au nivea du repo.
 
-- Isolation de la logique métier : En découpant le projet par domaines (Magasin, Bibliothèque, Communauté, etc), nous pouvons développé simultanément différentes features sans craindre un développement bloquant pour certains. Si un développeur prend du retard sur le service "Communauté", cela ne bloque pas le développement ou la mise en prod du service "Magasin".
+- Isolation de la logique métier : En découpant le projet par domaines (Magasin, Bibliothèque, Communauté, etc), nous pouvons développer simultanément différentes features sans craindre un développement bloquant pour certains. Si un développeur prend du retard sur le service "Communauté", cela ne bloque pas le développement ou la mise en prod du service "Magasin".
 
 - Respect de la deadline : Nous avons évité de rendre nos micro servics trop fin pour éviter une infra complexe pour leur gestion, au profit de services de taille moyenne, adaptés à une équipe de 4 personnes.
 
