@@ -1,14 +1,14 @@
 **[Accès au wiki du projet](https://github.com/Latr21/VAPEUR/wiki)**
 
 # Décision d'Architecture
-Contexte : Réalisation du concurrent se Steam, "Vapeur", par une équipe de 5 développeurs.
+Contexte : Réalisation du concurrent de Steam, "Vapeur", par une équipe de 5 développeurs.
 
 ## 1. Architecture Hybride (N-Tiers & Microservices)
 Approche hybride, N-tiers pour la séparation des couches de présentation, logique métier et données, et un découpage en microservices métiers.
 
 - Répartition du travail : Le découpage en tiers nous a permis de se répartir les tâches clairement sans créer de conflits au nivea du repo.
 
-- Isolation de la logique métier : En découpant le projet par domaines (Magasin, Bibliothèque, Communauté, etc), nous pouvons développement simultanément différentes features sans craindre un développement bloquant pour certains. Si un développeur prend du retard sur le service "Communauté", cela ne bloque pas le développement ou la mise en prod du service "Magasin".
+- Isolation de la logique métier : En découpant le projet par domaines (Magasin, Bibliothèque, Communauté, etc), nous pouvons développé simultanément différentes features sans craindre un développement bloquant pour certains. Si un développeur prend du retard sur le service "Communauté", cela ne bloque pas le développement ou la mise en prod du service "Magasin".
 
 - Respect de la deadline : Nous avons évité de rendre nos micro servics trop fin pour éviter une infra complexe pour leur gestion, au profit de services de taille moyenne, adaptés à une équipe de 4 personnes.
 
